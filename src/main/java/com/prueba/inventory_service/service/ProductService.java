@@ -7,5 +7,7 @@ public interface ProductService {
 
     
     ProductDto create(CreateProductRequest request);
+
+    ProductDto getProduct(String id);
     
 }

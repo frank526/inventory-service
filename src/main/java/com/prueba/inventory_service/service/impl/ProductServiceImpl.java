@@ -1,5 +1,7 @@
 package com.prueba.inventory_service.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +51,25 @@ public class ProductServiceImpl implements ProductService {
                 .nombre(productCreated.getName())
                 .codigo(productCreated.getCode())
                 .description(productCreated.getDescription())
+                .stock(productCreated.getStock())
                 .precio(productCreated.getPrice()).build();
 
         return productoDto;
     }
-    
+
+    @Override
+    public ProductDto getProduct(String id) {
+
+        Optional<Product> productFound = repo.findById(Long.parseLong(id));
+
+        if (productFound.isPresent()) {
+
+        }
+
+        Product product = productFound.get();
+        ProductDto productDto = mapToProductDto(product);
+        return productDto;
+
+    }
+
 }
