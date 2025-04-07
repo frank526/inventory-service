@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prueba.common_library.dto.ProductDto;
 import com.prueba.inventory_service.dto.CreateProductRequest;
+import com.prueba.inventory_service.dto.UpdateProductRequest;
 import com.prueba.inventory_service.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -41,7 +44,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable String id) {
+    public ResponseEntity<?> getProduct(@PathVariable Long id) {
 
         Map<String, Object> response = new HashMap<>();
         ProductDto producto = productService.getProduct(id);
@@ -49,8 +52,36 @@ public class ProductController {
         response.put("success", Boolean.TRUE);
         response.put("datos", producto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+
+        Map<String, Object> response = new HashMap<>();
+        productService.remove(id);
+
+        response.put("success", Boolean.TRUE);
+        response.put("Response", "Producto "+id+" eliminado");
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid UpdateProductRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+
+       ProductDto productDto = productService.update(id, request);
+
+       response.put("success", Boolean.TRUE);
+       response.put("datos", productDto);
+
+       return ResponseEntity.status(HttpStatus.OK).body(response);
+       
+    }
+
+
 
     
 }
