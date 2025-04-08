@@ -40,12 +40,10 @@ public class SecurityConfig {
             )
             .addFilterBefore(jwtAuthenticationFilter(jwtService()), UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(customAuthenticationEntryPoint) // Aquí
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
         ).csrf(csrf -> csrf.disable());
 
         return http.build();
     }
 
 }
-
-// .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
